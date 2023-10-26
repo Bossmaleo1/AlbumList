@@ -1,4 +1,4 @@
-package com.leboncointest.android
+package com.leboncointest.android.domain.repository
 
 import com.leboncointest.android.data.model.dataLocal.AlbumRoom
 import com.leboncointest.android.data.model.dataRemote.response.Album
