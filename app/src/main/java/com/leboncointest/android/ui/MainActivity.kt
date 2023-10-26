@@ -1,4 +1,4 @@
-package com.leboncointest.android
+package com.leboncointest.android.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
