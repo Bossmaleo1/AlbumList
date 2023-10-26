@@ -24,29 +24,14 @@
     </style>
 
 </resources-->
+
 <resources>
 
-    <!-- Allows us to override platform level specific attributes in their
-         respective values-vXX folder. -->
-    <style name="Platform.Theme.RakutenTheme" parent="Theme.Material3.DayNight">
-        <item name="android:statusBarColor">@color/black30</item>
+    <!-- Our dark theme -->
+    <style name="Theme.LeboncoinTheme" parent="Platform.Theme.LeboncoinTheme" >
+        <item name="colorPrimary">@color/blue300</item>
+        <item name="colorPrimaryDark">@color/blue400</item>
+        <item name="colorAccent">@color/yellow400</item>
     </style>
-
-    <!-- The actual theme we use. This varies for light theme (here),
-         and values-night for dark theme. -->
-    <style name="Theme.LeboncoinTheme" parent="Platform.Theme.RakutenTheme">
-        <item name="colorPrimary">@color/blue500</item>
-        <item name="colorPrimaryDark">@color/blue800</item>
-        <item name="colorAccent">@color/yellow700</item>
-    </style>
-
-    <style name="Theme.LeboncoinTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.LeboncoinTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
-
-    <style name="Theme.LeboncoinTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
 </resources>
