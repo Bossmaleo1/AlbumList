@@ -23,7 +23,7 @@ class AlbumDAOTest {
     private lateinit var dao: AlbumDAO
     private lateinit var database: LeBonCoinDatabase
 
-    // we initialize our room data product list
+    // we initialize our room data album list
     val albums = listOf(
         AlbumRoom(
             albumId = 1,
@@ -66,7 +66,7 @@ class AlbumDAOTest {
     }
 
     /**
-     * This method insert our product list
+     * This method insert our album list
      * and should be used in our tests
      */
     fun insertAlbumList() = runTest {
@@ -131,14 +131,14 @@ class AlbumDAOTest {
 
 
         /**
-         *  now we  our get all products method to test it
-         *  we test our second product list headline item before the update
+         *  now we  our get all albums method to test it
+         *  we test our second album list headline item before the update
          */
         dao.getAllAlbums().test {
             //we get our flow item
             val albums = awaitItem()
-            //we test our second product list headline item
-            //we test our second album list title item
+            //we test our first album list title item
+            //we test our first album list title item
             Truth.assertThat(albums[0].title).isEqualTo("accusamus beatae ad facilis cum similique qui sunt")
             Truth.assertThat(albums[0].albumId).isEqualTo(1)
             Truth.assertThat(albums[0].id).isEqualTo(1)
@@ -148,8 +148,8 @@ class AlbumDAOTest {
         }
 
 
-        // now we update our second products headline
-        //products[1].headline = "Samsung Galaxy S21 5G 128 Go Double SIM Violet Sidney of rakuten set this headline"
+        // now we update our first album title
+        //albums[0].title = "accusamus beatae ad facilis cum similique qui sunt"
         dao.updateAlbum(AlbumRoom(
             albumId = 1,
             id = 1,
@@ -161,7 +161,7 @@ class AlbumDAOTest {
         dao.getAllAlbums().test {
             //we get our flow item
             val albums = awaitItem()
-            //we test our second product list headline item
+            //we test our second album list headline item
             // to verify if our update was be a success
             Truth.assertThat(albums[0].title).isEqualTo("Testing LeBonCoin")
             cancel()
