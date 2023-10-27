@@ -34,7 +34,7 @@ import com.leboncointest.android.ui.views.bottomNavigationItems.AccountItem
 import com.leboncointest.android.ui.views.bottomNavigationItems.FavoriteItem
 import com.leboncointest.android.ui.views.bottomNavigationItems.MessageItem
 import com.leboncointest.android.ui.views.bottomNavigationItems.PublishItem
-import com.leboncointest.android.ui.views.bottomNavigationItems.searchView.SearchItem
+import com.leboncointest.android.ui.views.bottomNavigationItems.searchView.SearchAlbum
 import com.leboncointest.android.ui.views.model.BottomNavigationItem
 import com.leboncointest.android.ui.views.model.Route
 
@@ -89,14 +89,14 @@ fun HomeApp(
                     TopAppBar(
                         backgroundColor = if(!isDark) Color.White else MaterialTheme.colorScheme.surface,
                         navigationIcon = {
+
+                        },
+                        title = {
                             Image(
                                 modifier = Modifier.padding(start = 5.dp),
                                 painter = painterResource(id = R.drawable.icon_transparent),
                                 contentDescription = "The Application Launcher"
                             )
-                        },
-                        title = {
-
                         },
                         actions = {
                             // RowScope here, so these icons will be placed horizontally
@@ -120,7 +120,7 @@ fun HomeApp(
                     // here we initialize our content home app views
                     when (selectedItem.intValue) {
                         0 -> {
-                            SearchItem(
+                            SearchAlbum(
                                 albumViewModel = albumViewModel
                             )
                         }

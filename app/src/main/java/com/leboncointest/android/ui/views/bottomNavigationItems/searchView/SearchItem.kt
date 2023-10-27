@@ -1,16 +1,17 @@
 package com.leboncointest.android.ui.views.bottomNavigationItems.searchView
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -18,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
@@ -45,7 +45,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
-import androidx.navigation.NavHostController
 import com.leboncointest.android.R
 import com.leboncointest.android.data.model.dataRemote.response.Album
 import com.leboncointest.android.presentation.util.isNetworkAvailable
@@ -56,7 +55,7 @@ import com.leboncointest.android.ui.views.progressbar.SpinnerCenterVerticalHoriz
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun SearchItem(
+fun SearchAlbum(
     albumViewModel: AlbumViewModel
 ) {
 
@@ -84,7 +83,7 @@ fun SearchItem(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        backgroundColor = if (isDark) Color.White else MaterialTheme.colorScheme.background,
+        backgroundColor = getBackgroundColor(isDark = isDark),
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState,
@@ -98,14 +97,10 @@ fun SearchItem(
                 .fillMaxSize()
                 .padding(paddingValue).run {
                     //we make white if we have the light mode
-                    if (!isDark) {
-                        this.background(Color.White)
-                    } else {
-                        this.background(MaterialTheme.colorScheme.surface)
-                    }
-
+                    this.background(getSurfaceBackgrounClor(isDark))
                 }
         ) {
+            Spacer(modifier = Modifier.size(10.dp))
 
             OutlinedTextField(
                 value = searchElement,
@@ -135,28 +130,11 @@ fun SearchItem(
             )
 
             //we display our spinner if we request our network
-            if (screenState.isLoad) {
-                SpinnerCenterVerticalHorizontal()
-            }
+            SpinnerCenterVerticalHorizontal(screenState.isLoad)
+
 
 
             Row {
-
-                /**
-                 * We build the LazyRow
-                 * to illustrate a UI as
-                 * in the real application
-                 */
-                /**
-                 * We build the LazyRow
-                 * to illustrate a UI as
-                 * in the real application
-                 */
-                /**
-                 * We build the LazyRow
-                 * to illustrate a UI as
-                 * in the real application
-                 */
 
                 /**
                  * We build the LazyRow
@@ -173,10 +151,8 @@ fun SearchItem(
                         //we make white if we have the light mode
                         if (!isDark) {
                             this.background(Color.White)
-                        } else {
-                            this.background(MaterialTheme.colorScheme.surface)
                         }
-
+                        this.background(MaterialTheme.colorScheme.surface)
                     }
                 ) {
                     items(screenState.albumList) { album ->
@@ -192,9 +168,7 @@ fun SearchItem(
     }
 
     //we observe our network state
-    if (screenState.isNetworkError) {
-        albumViewModel.onEvent(AlbumEvent.IsNetworkError(context.getString(R.string.is_connect_error)))
-    } else if (!screenState.isNetworkConnected) {
+    if (!screenState.isNetworkConnected) {
         albumViewModel.onEvent(AlbumEvent.IsNetworkConnected(context.getString(R.string.is_connect_error)))
     }
 
@@ -213,12 +187,12 @@ fun SearchItem(
 
 
             //we get our product list
-            albumViewModel.getAlbumList().observe(context as LifecycleOwner) { AlbumListRoom->
+            albumViewModel.getAlbumList().observe(context as LifecycleOwner) {albums->
 
                 // Before we clean our screen state product list
                 screenState.albumList.removeAll(screenState.albumList)
 
-                AlbumListRoom.forEach { albumRoom ->
+                albums.forEach { albumRoom ->
                     albumRoom.albumId?.let {
                         albumRoom.id?.let { it1 ->
                             Album(
@@ -250,11 +224,25 @@ fun SearchItem(
                             duration = SnackbarDuration.Long
                         )
                     }
-
-                    else -> {}
                 }
             }
         }
 
     }
 }
+
+@Composable
+fun getBackgroundColor(isDark: Boolean): Color {
+   return if (isDark) Color.White else MaterialTheme.colorScheme.background
+}
+
+@Composable
+fun getSurfaceBackgrounClor(isDark: Boolean): Color{
+      return if (!isDark) {
+        Color.White
+    } else {
+        MaterialTheme.colorScheme.surface
+    }
+}
+
+

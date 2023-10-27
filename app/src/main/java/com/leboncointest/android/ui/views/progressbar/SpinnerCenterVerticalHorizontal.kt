@@ -12,16 +12,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SpinnerCenterVerticalHorizontal() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        CircularProgressIndicator(
-            modifier = Modifier.width(64.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            trackColor = MaterialTheme.colorScheme.secondary,
-        )
+fun SpinnerCenterVerticalHorizontal(isLoad : Boolean) {
+    if(isLoad) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.width(64.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                trackColor = MaterialTheme.colorScheme.secondary,
+            )
+        }
     }
 }

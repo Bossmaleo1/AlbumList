@@ -8,7 +8,5 @@ sealed class AlbumEvent {
 
     object GetLocalAlbums: AlbumEvent()
 
-    data class IsNetworkError(val errorMessage: String): AlbumEvent()
-
     data class IsNetworkConnected(val errorMessage: String): AlbumEvent()
 }
