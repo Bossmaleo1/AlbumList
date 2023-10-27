@@ -9,17 +9,10 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.AddBox
-import androidx.compose.material.icons.outlined.AllInclusive
 import androidx.compose.material.icons.outlined.ChatBubbleOutline
-import androidx.compose.material.icons.outlined.Comment
-import androidx.compose.material.icons.outlined.EuroSymbol
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.ManageAccounts
-import androidx.compose.material.icons.outlined.Message
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.leboncointest.android.presentation.viewModel.album.AlbumViewModel
 import com.leboncointest.android.R
 import com.leboncointest.android.ui.views.bottomNavigationItems.AccountItem
@@ -48,7 +40,6 @@ import com.leboncointest.android.ui.views.model.Route
 
 @Composable
 fun HomeApp(
-    navController: NavHostController,
     albumViewModel: AlbumViewModel
 ) {
 
@@ -129,23 +120,25 @@ fun HomeApp(
                     // here we initialize our content home app views
                     when (selectedItem.intValue) {
                         0 -> {
-                            SearchItem(navController = navController, albumViewModel = albumViewModel)
+                            SearchItem(
+                                albumViewModel = albumViewModel
+                            )
                         }
 
                         1 -> {
-                            FavoriteItem(navController = navController)
+                            FavoriteItem()
                         }
 
                         2 -> {
-                            PublishItem(navController = navController)
+                            PublishItem()
                         }
 
                         3 -> {
-                            MessageItem(navController = navController)
+                            MessageItem()
                         }
 
                         else -> {
-                            AccountItem(navController = navController)
+                            AccountItem()
                         }
                     }
                 }

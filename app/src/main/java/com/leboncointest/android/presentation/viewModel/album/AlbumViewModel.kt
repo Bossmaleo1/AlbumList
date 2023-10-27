@@ -103,7 +103,6 @@ class AlbumViewModel @Inject constructor(
     }
 
     //in this method we handle our product list event
-    @RequiresApi(Build.VERSION_CODES.M)
     fun onEvent(event: AlbumEvent) {
         when(event) {
             //Here we get call our remote product

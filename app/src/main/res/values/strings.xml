@@ -6,6 +6,8 @@
     <string name="publish_bottom_view">Publier</string>
     <string name="message_bottom_view">Messages</string>
     <string name="account_bottom_view">Compte</string>
-    <string name="search_for_leboncoin">Rechercher sur leboncoin</string>
-    <string name="retry_leboncoin">Retry</string>
+    <string name="search_for_leboncoin">Search on leboncoin</string>
+    <string name="retry_leboncoin">Try again</string>
+    <string name="is_connect_error">You are disconnected, please review your connection</string>
+    <string name="network_error">A server error has just occurred</string>
 </resources>

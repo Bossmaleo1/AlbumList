@@ -88,7 +88,6 @@ class MainActivity : ComponentActivity() {
                 route = Route.homeView
             ) {
                 HomeApp(
-                    navController = navController,
                     albumViewModel = albumViewModel
                 )
                 //this instruction help the user to exit of the app

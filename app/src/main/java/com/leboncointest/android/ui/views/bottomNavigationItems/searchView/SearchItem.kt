@@ -1,9 +1,13 @@
 package com.leboncointest.android.ui.views.bottomNavigationItems.searchView
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,15 +19,18 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,14 +44,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
 import com.leboncointest.android.R
+import com.leboncointest.android.data.model.dataRemote.response.Album
+import com.leboncointest.android.presentation.util.isNetworkAvailable
 import com.leboncointest.android.presentation.viewModel.album.AlbumViewModel
+import com.leboncointest.android.ui.UIEvent.Event.AlbumEvent
+import com.leboncointest.android.ui.UIEvent.UIEvent
 import com.leboncointest.android.ui.views.progressbar.SpinnerCenterVerticalHorizontal
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SearchItem(
-    navController: NavHostController,
     albumViewModel: AlbumViewModel
 ) {
 
@@ -81,58 +93,10 @@ fun SearchItem(
         }
     ) { paddingValue ->
 
-        OutlinedTextField(
-            value = searchElement,
-            singleLine = true,
-            textStyle = TextStyle(fontSize = 12.sp),
-            onValueChange = {
-                searchElement = it
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            placeholder = {
-                Text(text = stringResource(R.string.search_for_leboncoin))
-            },
-            leadingIcon = {
-                IconButton(onClick = { }) {
-                    Icon(
-                        imageVector = Icons.Outlined.Menu,
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-            },
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 0.dp, bottom = 0.dp, start = 10.dp, end = 10.dp)
-                .height(55.dp),
-            shape = RoundedCornerShape(4.dp)
-        )
-
-        //we display our spinner if we request our network
-        if (screenState.isLoad) {
-            SpinnerCenterVerticalHorizontal()
-        }
-
-
-        Row {
-
-            /**
-             * We build the LazyRow
-             * to illustrate a UI as
-             * in the real application
-             */
-            /**
-             * We build the LazyRow
-             * to illustrate a UI as
-             * in the real application
-             */
-            LazyColumn(
-                state = rememberLazyListState(),
-                contentPadding = PaddingValues(
-                    top = 20.dp,
-                    bottom = 100.dp
-                ),
-                modifier = Modifier.run {
+                .fillMaxSize()
+                .padding(paddingValue).run {
                     //we make white if we have the light mode
                     if (!isDark) {
                         this.background(Color.White)
@@ -141,16 +105,156 @@ fun SearchItem(
                     }
 
                 }
-            ) {
-                items(screenState.albumList) { album ->
-                    AlbumItem(
-                        navController = navController,
-                        album = album
-                    )
+        ) {
+
+            OutlinedTextField(
+                value = searchElement,
+                singleLine = true,
+                textStyle = TextStyle(fontSize = 12.sp),
+                onValueChange = {
+                    searchElement = it
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                placeholder = {
+                    Text(text = stringResource(R.string.search_for_leboncoin))
+                },
+                leadingIcon = {
+                    IconButton(onClick = { }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 0.dp, bottom = 0.dp, start = 10.dp, end = 10.dp)
+                    .height(55.dp),
+                shape = RoundedCornerShape(8.dp)
+            )
+
+            //we display our spinner if we request our network
+            if (screenState.isLoad) {
+                SpinnerCenterVerticalHorizontal()
+            }
+
+
+            Row {
+
+                /**
+                 * We build the LazyRow
+                 * to illustrate a UI as
+                 * in the real application
+                 */
+                /**
+                 * We build the LazyRow
+                 * to illustrate a UI as
+                 * in the real application
+                 */
+                /**
+                 * We build the LazyRow
+                 * to illustrate a UI as
+                 * in the real application
+                 */
+
+                /**
+                 * We build the LazyRow
+                 * to illustrate a UI as
+                 * in the real application
+                 */
+                LazyColumn(
+                    state = rememberLazyListState(),
+                    contentPadding = PaddingValues(
+                        top = 20.dp,
+                        bottom = 100.dp
+                    ),
+                    modifier = Modifier.run {
+                        //we make white if we have the light mode
+                        if (!isDark) {
+                            this.background(Color.White)
+                        } else {
+                            this.background(MaterialTheme.colorScheme.surface)
+                        }
+
+                    }
+                ) {
+                    items(screenState.albumList) { album ->
+                        AlbumItem(
+                            album = album
+                        )
+                    }
+
+
                 }
-
-
             }
         }
+    }
+
+    //we observe our network state
+    if (screenState.isNetworkError) {
+        albumViewModel.onEvent(AlbumEvent.IsNetworkError(context.getString(R.string.is_connect_error)))
+    } else if (!screenState.isNetworkConnected) {
+        albumViewModel.onEvent(AlbumEvent.IsNetworkConnected(context.getString(R.string.is_connect_error)))
+    }
+
+    //isrequesred help us to make our http call juste one time
+    LaunchedEffect(key1 = isRequested) {
+        //we call our api
+        albumViewModel.onEvent(AlbumEvent.GetRemoteAlbums(app = context))
+        isRequested.value = false
+    }
+    /**
+     * we test if we are offline to load our sqlite database datas
+     */
+    if (!isNetworkAvailable(context)) {
+        //we load our locale datas
+        LaunchedEffect(key1 = isNetworkFailed) {
+
+
+            //we get our product list
+            albumViewModel.getAlbumList().observe(context as LifecycleOwner) { AlbumListRoom->
+
+                // Before we clean our screen state product list
+                screenState.albumList.removeAll(screenState.albumList)
+
+                AlbumListRoom.forEach { albumRoom ->
+                    albumRoom.albumId?.let {
+                        albumRoom.id?.let { it1 ->
+                            Album(
+                                albumId = it,
+                                id = it1,
+                                title = albumRoom.title,
+                                url = albumRoom.url,
+                                thumbnailUrl = albumRoom.thumbnailUrl
+                            )
+                        }
+                    }?.let {
+                        screenState.albumList.add(
+                            it
+                        )
+                    }
+                }
+            }
+
+            //we close our block
+            isNetworkFailed.value = false
+        }
+
+        LaunchedEffect(key1 = !screenState.isNetworkConnected) {
+            albumViewModel.uiEventFlow.collectLatest { event ->
+                when (event) {
+                    is UIEvent.ShowMessage -> {
+                        snackbarHostState.showSnackbar(
+                            message = event.message,
+                            duration = SnackbarDuration.Long
+                        )
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+
     }
 }

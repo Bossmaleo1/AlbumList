@@ -1,7 +1,6 @@
 package com.leboncointest.android.ui.views.bottomNavigationItems.searchView
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,13 +26,12 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.leboncointest.android.data.model.dataRemote.response.Album
 
+//In this UI we build our Row Card
 @Composable
 fun AlbumItem(
-    navController: NavHostController,
     album: Album
 ) {
 
@@ -66,7 +64,7 @@ fun AlbumItem(
                     //we test if we have a image to catch exception
                     //if (product.imagesUrls.isNotEmpty()) {
                         Image(
-                            painter = getAlbumImage(""),
+                            painter = getAlbumImage(album.url),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier

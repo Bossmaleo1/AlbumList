@@ -13,7 +13,7 @@ import androidx.navigation.NavHostController
 import com.leboncointest.android.R
 
 @Composable
-fun AccountItem(navController: NavHostController,) {
+fun AccountItem() {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

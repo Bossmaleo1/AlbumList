@@ -13,7 +13,7 @@ import androidx.navigation.NavHostController
 import com.leboncointest.android.R
 
 @Composable
-fun FavoriteItem(navController: NavHostController,) {
+fun FavoriteItem() {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
