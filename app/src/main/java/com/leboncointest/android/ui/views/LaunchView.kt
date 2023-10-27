@@ -42,7 +42,7 @@ fun LaunchView() {
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center) {
             Image(
-                painter = painterResource(id = R.mipmap.ic_launcher_round) ,
+                painter = painterResource(id = R.drawable.leboncoinicon) ,
                 contentDescription = "The Application Launcher"
             )
         }

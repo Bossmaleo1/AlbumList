@@ -7,11 +7,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.AddBox
 import androidx.compose.material.icons.outlined.AllInclusive
+import androidx.compose.material.icons.outlined.ChatBubbleOutline
+import androidx.compose.material.icons.outlined.Comment
 import androidx.compose.material.icons.outlined.EuroSymbol
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.ManageAccounts
+import androidx.compose.material.icons.outlined.Message
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
@@ -51,29 +58,29 @@ fun HomeApp(
     //In this list we initialize our bottom navigation items
     val bottomNavigationItems = listOf(
         BottomNavigationItem(
-            Icons.Outlined.Home,
+            Icons.Outlined.Search,
             stringResource(R.string.search_bottom_view),
-            Route.SEARCHVIEW as String
+            Route.searchView
         ),
         BottomNavigationItem(
-            Icons.Outlined.AllInclusive,
+            Icons.Outlined.FavoriteBorder,
             stringResource(R.string.favorite_bottom_view),
-            Route.FAVORITEVIEW as String
+            Route.favoriteView
         ),
         BottomNavigationItem(
-            Icons.Outlined.ShoppingCart,
+            Icons.Outlined.AddBox,
             stringResource(R.string.publish_bottom_view),
-            Route.PUBLISHVIEW as String
+            Route.publishView
         ),
         BottomNavigationItem(
-            Icons.Outlined.EuroSymbol,
+            Icons.Outlined.ChatBubbleOutline,
             stringResource(R.string.message_bottom_view),
-            Route.MESSAGEVIEW as String
+            Route.messageView
         ),
         BottomNavigationItem(
-            Icons.Outlined.ManageAccounts,
+            Icons.Outlined.AccountCircle,
             stringResource(R.string.account_bottom_view),
-            Route.ACCOUNTVIEW as String
+            Route.accountView
         ),
     )
 
@@ -93,7 +100,7 @@ fun HomeApp(
                         navigationIcon = {
                             Image(
                                 modifier = Modifier.padding(start = 5.dp),
-                                painter = painterResource(id = R.mipmap.ic_launcher_round),
+                                painter = painterResource(id = R.drawable.icon_transparent),
                                 contentDescription = "The Application Launcher"
                             )
                         },
@@ -104,7 +111,7 @@ fun HomeApp(
                             // RowScope here, so these icons will be placed horizontally
                             IconButton(onClick = { /* doSomething() */ }) {
                                 Icon(
-                                    Icons.Outlined.FavoriteBorder,
+                                    Icons.Outlined.Notifications,
                                     contentDescription = "Localized description"
                                 )
                             }

@@ -46,6 +46,8 @@ class AlbumUseCaseModule {
     }
 
 
+    @Singleton
+    @Provides
     fun provideDeleteLocalAlbum(
         albumRepository: AlbumRepository
     ) : DeleteLocalAlbumUseCase {

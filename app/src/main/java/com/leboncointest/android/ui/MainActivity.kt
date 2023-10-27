@@ -9,7 +9,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,14 +20,17 @@ import androidx.navigation.compose.rememberNavController
 import com.leboncointest.android.presentation.viewModel.album.AlbumViewModel
 import com.leboncointest.android.presentation.viewModel.album.AlbumViewModelFactory
 import com.leboncointest.android.ui.theme.LeBonCoinTheme
+import com.leboncointest.android.ui.views.HomeApp
 import com.leboncointest.android.ui.views.LaunchView
 import com.leboncointest.android.ui.views.model.Route
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @Inject
@@ -50,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     MainView(navController)
                     CoroutineScope(Dispatchers.Main).launch {
                         delay(200)
-                        navController.navigate(Route.HOMEVIEW as String)
+                        navController.navigate(Route.homeView)
                     }
                 }
             }
@@ -72,10 +74,25 @@ class MainActivity : ComponentActivity() {
         //We call our init view model method
         this.initViewModel()
 
-        NavHost(navController = navController, startDestination = (Route.LAUNCHVIEW as String)) {
+        NavHost(navController = navController, startDestination = Route.launchView) {
             //This is our launch view navigation initialize
-            composable(route = Route.LAUNCHVIEW) {
+            composable(route = Route.launchView) {
                 LaunchView()
+                BackHandler {
+                    activity?.finish()
+                }
+            }
+
+            //This is our home view navigation initialize
+            composable(
+                route = Route.homeView
+            ) {
+                HomeApp(
+                    navController = navController,
+                    albumViewModel = albumViewModel
+                )
+                //this instruction help the user to exit of the app
+                //after he press the back button
                 BackHandler {
                     activity?.finish()
                 }
@@ -83,12 +100,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
 }
