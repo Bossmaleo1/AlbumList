@@ -6,4 +6,6 @@
     <string name="publish_bottom_view">Publier</string>
     <string name="message_bottom_view">Messages</string>
     <string name="account_bottom_view">Compte</string>
+    <string name="search_for_leboncoin">Rechercher sur leboncoin</string>
+    <string name="retry_leboncoin">Retry</string>
 </resources>

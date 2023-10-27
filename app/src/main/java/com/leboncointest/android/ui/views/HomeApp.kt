@@ -129,7 +129,7 @@ fun HomeApp(
                     // here we initialize our content home app views
                     when (selectedItem.intValue) {
                         0 -> {
-                            SearchItem(navController = navController)
+                            SearchItem(navController = navController, albumViewModel = albumViewModel)
                         }
 
                         1 -> {
