@@ -9,9 +9,9 @@ import androidx.room.PrimaryKey
 )
 data class AlbumRoom(
     @ColumnInfo(name = "album_albumId")
-    @PrimaryKey(autoGenerate = false)
     var albumId: Long?,
     @ColumnInfo(name = "album_id")
+    @PrimaryKey(autoGenerate = false)
     var id: Long?,
     @ColumnInfo("album_title")
     var title: String,
