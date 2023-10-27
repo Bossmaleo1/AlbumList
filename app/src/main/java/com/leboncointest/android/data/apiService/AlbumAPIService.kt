@@ -5,7 +5,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 
-interface AlbumAPIService {
+fun interface AlbumAPIService {
 
    @GET("/img/shared/technical-test.json")
    suspend fun getAlbums() : Response<List<Album>>

@@ -1,7 +1,5 @@
 package com.leboncointest.android.presentation.viewModel.album
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -136,7 +134,7 @@ class AlbumViewModel @Inject constructor(
             }
 
             //we control our network errors
-            is AlbumEvent.IsNetworkConnected -> {
+            is AlbumEvent.IsNetworkConnected  -> {
                 viewModelScope.launch {
                     _uiEventFlow.emit(
                         UIEvent.ShowMessage(
@@ -146,17 +144,7 @@ class AlbumViewModel @Inject constructor(
                 }
             }
 
-            is AlbumEvent.IsNetworkError -> {
-                viewModelScope.launch {
-                    _uiEventFlow.emit(
-                        UIEvent.ShowMessage(
-                            message = event.errorMessage
-                        )
-                    )
-                }
-            }
 
-            else -> {}
         }
     }
 

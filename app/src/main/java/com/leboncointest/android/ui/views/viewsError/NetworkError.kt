@@ -17,21 +17,15 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.leboncointest.android.presentation.viewModel.album.AlbumViewModel
 import com.leboncointest.android.R
 
 @Composable
 fun NetworkError(
     title: String,
-    iconValue: Int,
-    albumViewModel: AlbumViewModel
+    iconValue: Int
 ) {
-
-    //we get our application context
-    val context = LocalContext.current
 
     Card(
         modifier = Modifier

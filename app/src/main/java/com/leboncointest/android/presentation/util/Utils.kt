@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import androidx.annotation.RequiresApi
 
 /**
  * This method help us to check our network state
@@ -28,6 +27,7 @@ fun isNetworkAvailable(context: Context?): Boolean {
             }
         }
     } else {
+        //we have deprecated here because we have min use api 21
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
         if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
             return true
