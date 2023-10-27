@@ -1,18 +1,9 @@
 <resources>
-    <string name="app_name">RakutenTest</string>
-    <string name="e_commerce_all">E-Commerce for all</string>
-    <string name="home">Home</string>
-    <string name="cash_back">Cashback</string>
-    <string name="basket">Basket</string>
-    <string name="sell">Sell</string>
-    <string name="account">Account</string>
-    <string name="occasion">Opportunity from</string>
-    <string name="notice">notice</string>
-    <string name="new_value"> New</string>
-    <string name="is_connect_error">You are disconnected, please review your connection</string>
-    <string name="network_error">A server error has just occurred</string>
-    <string name="retry">Try again</string>
-    <string name="search_rakuten">Search on Rakuten</string>
-    <string name="description">Description</string>
-    <string name="seller_comment">Seller\'s Comment</string>
+    <string name="app_name">LeBonCoin</string>
+    <string name="launch_title">vendez, achetez, près de chez vous </string>
+    <string name="search_bottom_view">Rechercher</string>
+    <string name="favorite_bottom_view">Favoris</string>
+    <string name="publish_bottom_view">Publier</string>
+    <string name="message_bottom_view">Messages</string>
+    <string name="account_bottom_view">Compte</string>
 </resources>
