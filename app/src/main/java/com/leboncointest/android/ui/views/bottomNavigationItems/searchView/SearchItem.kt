@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.GpsFixed
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
@@ -117,6 +118,15 @@ fun SearchAlbum(
                     IconButton(onClick = { }) {
                         Icon(
                             imageVector = Icons.Outlined.Search,
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                },
+                trailingIcon = {
+                    IconButton(onClick = { }) {
+                        Icon(
+                            imageVector = Icons.Outlined.GpsFixed,
                             contentDescription = "",
                             tint = MaterialTheme.colorScheme.primary
                         )

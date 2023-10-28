@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.leboncointest.android.data.model.dataRemote.response.Album
 
@@ -62,41 +61,27 @@ fun AlbumItem(
 
                 Row {
                     //we test if we have a image to catch exception
-                    //if (product.imagesUrls.isNotEmpty()) {
-                        Image(
-                            painter = getAlbumImage(album.url),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .padding(top = 20.dp, bottom = 20.dp, start = 5.dp, end = 5.dp)
-                                .height(100.dp)
-                                .width(100.dp)
-                        )
-                    //}
-
+                    Image(
+                        painter = getAlbumImage(album.thumbnailUrl),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .padding(start = 5.dp, end = 5.dp)
+                            .height(150.dp)
+                            .width(150.dp)
+                    )
 
                     Column {
 
                         Row {
                             Text(
-                                text = "Testing 1",
+                                text = album.title,
                                 style = MaterialTheme.typography.titleSmall,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(end = 35.dp)
                             )
-
-
                         }
-
-                        Text(
-                            text = "Samsung - Téléphone Samsung Galaxy...",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(end = 35.dp),
-                            fontSize = 10.sp
-
-                        )
 
                     }
                 }

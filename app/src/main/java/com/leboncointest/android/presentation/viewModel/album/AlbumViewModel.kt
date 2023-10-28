@@ -47,7 +47,7 @@ class AlbumViewModel @Inject constructor(
     val uiEventFlow = _uiEventFlow.asSharedFlow()
 
     // Here we make our http Request to get our album list
-    fun getRemoteAlbums() = viewModelScope.launch {
+    private fun getRemoteAlbums() = viewModelScope.launch {
         try {
             //we delete our database cache before reloading the new data if the user is online
             deleteLocalAlbumUseCase.execute()
@@ -56,7 +56,7 @@ class AlbumViewModel @Inject constructor(
                 /**
                  * I use the addAll method because
                  * if we have several pages we can
-                 * apply lazzy loading infinitely
+                 * apply Lazy loading infinitely
                  */
                 screenStateAlbums.value.albumList.addAll(albums)
                 // Here we upgrade our state
@@ -116,9 +116,9 @@ class AlbumViewModel @Inject constructor(
                     getRemoteAlbums()
                 } else {
                     _screenStateAlbums.value = _screenStateAlbums.value.copy(
-                        //we have't  the network connexion
+                        //we have's  the network connexion
                         isNetworkConnected = false,
-                        //if we have't the network error
+                        //if we have's the network error
                         isNetworkError = false,
                         isLoad = false,
                     )
