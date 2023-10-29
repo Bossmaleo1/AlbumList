@@ -1,13 +1,14 @@
 package com.leboncointest.android.presentation.viewModel.album
 
-import androidx.lifecycle.LiveData
-import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.SmallTest
+import com.google.common.truth.Truth
+import com.leboncointest.android.CoroutineRule
 import com.leboncointest.android.albums
 import com.leboncointest.android.albumsRoom
 import com.leboncointest.android.data.apiService.AlbumAPIService
 import com.leboncointest.android.data.db.dao.AlbumDAO
-import com.leboncointest.android.data.model.dataLocal.AlbumRoom
 import com.leboncointest.android.data.repository.AlbumRepositoryImpl
 import com.leboncointest.android.data.repository.dataSourceImpl.album.AlbumLocalDataSourceImpl
 import com.leboncointest.android.data.repository.dataSourceImpl.album.AlbumRemoteDataSourceImpl
@@ -15,21 +16,29 @@ import com.leboncointest.android.domain.usecase.DeleteLocalAlbumUseCase
 import com.leboncointest.android.domain.usecase.GetLocalAlbumUseCase
 import com.leboncointest.android.domain.usecase.GetRemoteAlbumUseCase
 import com.leboncointest.android.domain.usecase.SaveAlbumUseCase
+import com.leboncointest.android.getAlbumsList
+import com.leboncointest.android.presentation.util.isNetworkAvailable
 import com.leboncointest.android.ui.UIEvent.Event.AlbumEvent
-import com.leboncointest.android.ui.UIEvent.UIEvent
-import com.leboncointest.android.util.CoroutineRule
+import com.leboncointest.android.ui.UIEvent.ScreenState.AlbumListScreenState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Mockito
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
-import org.mockito.Mockito.verify
+import org.mockito.kotlin.whenever
+import retrofit2.Response
 
 @ExperimentalCoroutinesApi
+@RunWith(AndroidJUnit4::class)
+@SmallTest
 class AlbumViewModelTest {
 
     private val testScheduler = TestCoroutineScheduler()
@@ -55,25 +64,7 @@ class AlbumViewModelTest {
     private  val getRemoteAlbumUseCase = GetRemoteAlbumUseCase(albumRepository)
 
     @Test
-    fun `calling getAlbums() triggers the api client`() = runTest {
-        // Arrange
-        val albumViewModel = AlbumViewModel(
-            getRemoteAlbumUseCase = getRemoteAlbumUseCase,
-            saveAlbumUseCase = saveAlbumUseCase,
-            deleteLocalAlbumUseCase = deleteLocalAlbumUseCase,
-            getLocalAlbumUseCase = getLocalAlbumUseCase
-        )
-
-        // Act
-        albumViewModel.getRemoteAlbums()
-        runCurrent()
-
-        // Assert
-        verify(mockApiClient, times(1)).getAlbums()
-    }
-
-    @Test
-    fun `calling save album triggers the dao insert`() = runTest {
+    fun canHaveGoodNetWorkStateAndGoodLoadingState() = runTest {
         // Arrange
         val albumViewModel = AlbumViewModel(
             getRemoteAlbumUseCase = getRemoteAlbumUseCase,
@@ -83,34 +74,24 @@ class AlbumViewModelTest {
         )
 
 
-        // Act
-        albumViewModel.insertAlbums(albums)
+        val isConnected = isNetworkAvailable(ApplicationProvider.getApplicationContext())
+
+        //Act
         runCurrent()
 
         // Assert
-        verify(mockAlbumDAO, times(1)).insert(albumsRoom[0])
+        val screenState = albumViewModel.screenStateAlbums.value
+        assert(screenState is AlbumListScreenState)
+        assertEquals(screenState.isNetworkConnected, isConnected)
+        assertEquals(screenState.isLoad, false)
     }
 
+
+
     @Test
-    fun `calling delete all albums triggers the dao delete`() = runTest {
+    fun canRetrieveAlbumListIfWeHaveNetworkEnabled() = runTest {
         // Arrange
-        val albumViewModel = AlbumViewModel(
-            getRemoteAlbumUseCase = getRemoteAlbumUseCase,
-            saveAlbumUseCase = saveAlbumUseCase,
-            deleteLocalAlbumUseCase = deleteLocalAlbumUseCase,
-            getLocalAlbumUseCase = getLocalAlbumUseCase
-        )
-
-        // Act
-        albumViewModel.deleteAlbums()
-        runCurrent()
-
-        // Assert
-        verify(mockAlbumDAO, times(1)).deleteAllAlbum()
-    }
-
-    @Test
-    fun `we test if we return isConnected SnackBar Message`() = runTest {
+         whenever(mockApiClient.getAlbums()).doReturn(Response.success(albums))
         // Arrange
         val albumViewModel = AlbumViewModel(
             getRemoteAlbumUseCase = getRemoteAlbumUseCase,
@@ -121,32 +102,22 @@ class AlbumViewModelTest {
 
         // Act
         albumViewModel.onEvent(
-            AlbumEvent.IsNetworkConnected("You are disconnected, please review your connection")
+            AlbumEvent.GetRemoteAlbums(
+                app = ApplicationProvider.getApplicationContext()
+            )
         )
+        val expectedAlbums = albums
+
+        //Act
+        runCurrent()
 
         // Assert
-        albumViewModel.uiEventFlow.test {
-            //we get our flow item
-            val showMessage =  awaitItem() as UIEvent.ShowMessage
-            assertThat(showMessage.message).isEqualTo("You are disconnected, please review your connection")
-        }
-    }
-
-    @Test
-    fun `we test if getAlbumList retrieve the localAlbumList`() = runTest {
-        // Arrange
-        val albumViewModel = AlbumViewModel(
-            getRemoteAlbumUseCase = getRemoteAlbumUseCase,
-            saveAlbumUseCase = saveAlbumUseCase,
-            deleteLocalAlbumUseCase = deleteLocalAlbumUseCase,
-            getLocalAlbumUseCase = getLocalAlbumUseCase
-        )
-        //Act
-        val albumLocalLiveData = albumViewModel.getAlbumList()
-
-
-        assert(albumLocalLiveData is LiveData<List<AlbumRoom>>)
-
+        val screenState = albumViewModel.screenStateAlbums.value
+        assertEquals(screenState.albumList.size, 4)
+        assertEquals(screenState.albumList[0].albumId, albums[0].albumId)
+        assertEquals(screenState.albumList[0].id, albums[0].id)
+        assertEquals(screenState.albumList[0].url, albums[0].url)
+        assertEquals(screenState.albumList[0].thumbnailUrl, albums[0].thumbnailUrl)
     }
 
 }
