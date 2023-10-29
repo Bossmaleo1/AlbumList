@@ -88,4 +88,22 @@ class AlbumViewModelIntegrationTest {
         // Assert
         verify(mockAlbumDAO, times(1)).insert(albumsRoom[0])
     }
+
+    @Test
+    fun `calling delete all albums triggers the dao delete`() = runTest {
+        // Arrange
+        val albumViewModel = AlbumViewModel(
+            getRemoteAlbumUseCase = getRemoteAlbumUseCase,
+            saveAlbumUseCase = saveAlbumUseCase,
+            deleteLocalAlbumUseCase = deleteLocalAlbumUseCase,
+            getLocalAlbumUseCase = getLocalAlbumUseCase
+        )
+
+        // Act
+        albumViewModel.deleteAlbums()
+        runCurrent()
+
+        // Assert
+        verify(mockAlbumDAO, times(1)).deleteAllAlbum()
+    }
 }
