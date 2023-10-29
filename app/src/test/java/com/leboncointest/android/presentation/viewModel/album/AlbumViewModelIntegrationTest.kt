@@ -22,8 +22,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
-
-import kotlinx.coroutines.test.*
 import org.mockito.Mockito.verify
 
 @ExperimentalCoroutinesApi
@@ -31,7 +29,6 @@ class AlbumViewModelIntegrationTest {
 
     private val testScheduler = TestCoroutineScheduler()
     private val testDispatcher = StandardTestDispatcher(testScheduler)
-    private val testScope = TestScope(testDispatcher)
 
     @get:Rule
     val coroutineRule = CoroutineRule(testDispatcher)

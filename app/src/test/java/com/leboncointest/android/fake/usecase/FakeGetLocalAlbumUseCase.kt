@@ -1,4 +1,4 @@
-package com.leboncointest.android.domain.usecase.fake
+package com.leboncointest.android.fake.usecase
 
 import com.leboncointest.android.data.model.dataLocal.AlbumRoom
 import com.leboncointest.android.domain.repository.FakeAlbumRepository

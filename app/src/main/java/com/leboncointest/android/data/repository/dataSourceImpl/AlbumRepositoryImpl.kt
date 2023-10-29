@@ -18,7 +18,7 @@ class AlbumRepositoryImpl(
     /**
      * This method convert response to ressource albums
      */
-    private fun responseToResourceAlbums(response: Response<List<Album>>): Resource<List<Album>> {
+     fun responseToResourceAlbums(response: Response<List<Album>>): Resource<List<Album>> {
         if (response.isSuccessful) {
             response.body()?.let { result ->
                 return Resource.Success(result)
