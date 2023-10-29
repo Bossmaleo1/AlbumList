@@ -1,11 +1,15 @@
 package com.leboncointest.android.presentation.viewModel.album
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.leboncointest.android.albums
 import com.leboncointest.android.albumsRoom
 import com.leboncointest.android.data.apiService.AlbumAPIService
 import com.leboncointest.android.data.db.dao.AlbumDAO
+import com.leboncointest.android.data.model.dataLocal.AlbumRoom
 import com.leboncointest.android.data.repository.AlbumRepositoryImpl
 import com.leboncointest.android.data.repository.dataSourceImpl.album.AlbumLocalDataSourceImpl
 import com.leboncointest.android.data.repository.dataSourceImpl.album.AlbumRemoteDataSourceImpl
@@ -16,6 +20,7 @@ import com.leboncointest.android.domain.usecase.SaveAlbumUseCase
 import com.leboncointest.android.ui.UIEvent.Event.AlbumEvent
 import com.leboncointest.android.ui.UIEvent.UIEvent
 import com.leboncointest.android.util.CoroutineRule
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
@@ -129,4 +134,22 @@ class AlbumViewModelTest {
             assertThat(showMessage.message).isEqualTo("You are disconnected, please review your connection")
         }
     }
+
+    @Test
+    fun `we test if getAlbumList retrieve the localAlbumList`() = runTest {
+        // Arrange
+        val albumViewModel = AlbumViewModel(
+            getRemoteAlbumUseCase = getRemoteAlbumUseCase,
+            saveAlbumUseCase = saveAlbumUseCase,
+            deleteLocalAlbumUseCase = deleteLocalAlbumUseCase,
+            getLocalAlbumUseCase = getLocalAlbumUseCase
+        )
+        //Act
+        val albumLocalLiveData = albumViewModel.getAlbumList()
+
+
+        assert(albumLocalLiveData is LiveData<List<AlbumRoom>>)
+
+    }
+
 }

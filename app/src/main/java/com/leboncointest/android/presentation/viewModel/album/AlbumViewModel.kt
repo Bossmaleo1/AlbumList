@@ -138,14 +138,6 @@ class AlbumViewModel @Inject constructor(
                 }
             }
 
-            is AlbumEvent.GetLocalAlbums -> {
-                // Before we clean our screen state product list
-                screenStateAlbums.value.albumList.removeAll(screenStateAlbums.value.albumList)
-                viewModelScope.launch {
-
-                }
-            }
-
             //we control our network errors
             is AlbumEvent.IsNetworkConnected  -> {
                 viewModelScope.launch {
