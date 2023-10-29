@@ -7,6 +7,7 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okio.buffer
 import okio.source
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Retrofit
@@ -35,7 +36,7 @@ class AlbumAPIServiceTest {
      * This function help us to learn our
      * json resources files
      */
-    private fun enqueueMockResponse(
+     fun enqueueMockResponse(
         fileName: String
     ) {
         val inputStream = javaClass.classLoader!!.getResourceAsStream(fileName)
@@ -67,4 +68,8 @@ class AlbumAPIServiceTest {
         }
     }
 
+    @After
+    fun shutdownServer() {
+        server.shutdown()
+    }
 }

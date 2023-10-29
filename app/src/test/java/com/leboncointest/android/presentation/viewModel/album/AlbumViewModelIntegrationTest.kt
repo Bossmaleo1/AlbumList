@@ -4,9 +4,9 @@ import com.leboncointest.android.albums
 import com.leboncointest.android.albumsRoom
 import com.leboncointest.android.data.apiService.AlbumAPIService
 import com.leboncointest.android.data.db.dao.AlbumDAO
-import com.leboncointest.android.data.repository.dataSourceImpl.AlbumRepositoryImpl
+import com.leboncointest.android.data.repository.AlbumRepositoryImpl
 import com.leboncointest.android.data.repository.dataSourceImpl.album.AlbumLocalDataSourceImpl
-import com.leboncointest.android.data.repository.dataSourceImpl.album.AlbumRemoteDataSource
+import com.leboncointest.android.data.repository.dataSourceImpl.album.AlbumRemoteDataSourceImpl
 import com.leboncointest.android.domain.usecase.DeleteLocalAlbumUseCase
 import com.leboncointest.android.domain.usecase.GetLocalAlbumUseCase
 import com.leboncointest.android.domain.usecase.GetRemoteAlbumUseCase
@@ -15,7 +15,6 @@ import com.leboncointest.android.util.CoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -37,7 +36,7 @@ class AlbumViewModelIntegrationTest {
     private val mockAlbumDAO: AlbumDAO = mock()
 
     private val localDataSource  = AlbumLocalDataSourceImpl(mockAlbumDAO)
-    private val  remoteData = AlbumRemoteDataSource(mockApiClient)
+    private val  remoteData = AlbumRemoteDataSourceImpl(mockApiClient)
 
     private val albumRepository = AlbumRepositoryImpl(
         albumLocalDataSource = localDataSource,
