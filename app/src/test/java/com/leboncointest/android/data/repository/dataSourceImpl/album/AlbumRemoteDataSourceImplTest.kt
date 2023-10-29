@@ -2,7 +2,6 @@ package com.leboncointest.android.data.repository.dataSourceImpl.album
 
 import com.leboncointest.android.data.apiService.AlbumAPIService
 import com.leboncointest.android.data.model.dataRemote.response.Album
-import com.leboncointest.android.errorResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.OkHttpClient

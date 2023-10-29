@@ -1,81 +1,132 @@
 package com.leboncointest.android.presentation.viewModel.album
 
-import com.leboncointest.android.domain.repository.FakeAlbumRepository
+import app.cash.turbine.test
+import com.google.common.truth.Truth.assertThat
+import com.leboncointest.android.albums
+import com.leboncointest.android.albumsRoom
+import com.leboncointest.android.data.apiService.AlbumAPIService
+import com.leboncointest.android.data.db.dao.AlbumDAO
+import com.leboncointest.android.data.repository.AlbumRepositoryImpl
+import com.leboncointest.android.data.repository.dataSourceImpl.album.AlbumLocalDataSourceImpl
+import com.leboncointest.android.data.repository.dataSourceImpl.album.AlbumRemoteDataSourceImpl
 import com.leboncointest.android.domain.usecase.DeleteLocalAlbumUseCase
 import com.leboncointest.android.domain.usecase.GetLocalAlbumUseCase
 import com.leboncointest.android.domain.usecase.GetRemoteAlbumUseCase
 import com.leboncointest.android.domain.usecase.SaveAlbumUseCase
-import com.leboncointest.android.getAlbumsList
-import com.leboncointest.android.ui.UIEvent.ScreenState.AlbumListScreenState
+import com.leboncointest.android.ui.UIEvent.Event.AlbumEvent
+import com.leboncointest.android.ui.UIEvent.UIEvent
 import com.leboncointest.android.util.CoroutineRule
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.Mockito.verify
 
 @ExperimentalCoroutinesApi
 class AlbumViewModelTest {
 
+    private val testScheduler = TestCoroutineScheduler()
+    private val testDispatcher = StandardTestDispatcher(testScheduler)
+
     @get:Rule
-    val coroutineRule = CoroutineRule()
-    private lateinit var fakeAlbumRepository: FakeAlbumRepository
-    private lateinit var deleteLocalAlbumUseCase: DeleteLocalAlbumUseCase
-    private lateinit var getLocalAlbumUseCase: GetLocalAlbumUseCase
-    private lateinit var saveAlbumUseCase: SaveAlbumUseCase
-    private lateinit var getRemoteAlbumUseCase : GetRemoteAlbumUseCase
-    private lateinit var albumViewModel: AlbumViewModel
+    val coroutineRule = CoroutineRule(testDispatcher)
 
+    private val mockApiClient: AlbumAPIService = mock()
+    private val mockAlbumDAO: AlbumDAO = mock()
 
-    fun initializeViewModel() {
-        fakeAlbumRepository = FakeAlbumRepository()
-        getRemoteAlbumUseCase = GetRemoteAlbumUseCase(
-            albumRepository = fakeAlbumRepository
-        )
-        saveAlbumUseCase = SaveAlbumUseCase(
-            albumRepository = fakeAlbumRepository
-        )
-        deleteLocalAlbumUseCase = DeleteLocalAlbumUseCase(
-            albumRepository = fakeAlbumRepository
-        )
-        getLocalAlbumUseCase = GetLocalAlbumUseCase(
-            albumRepository = fakeAlbumRepository
-        )
+    private val localDataSource  = AlbumLocalDataSourceImpl(mockAlbumDAO)
+    private val  remoteData = AlbumRemoteDataSourceImpl(mockApiClient)
 
-        albumViewModel = AlbumViewModel(
+    private val albumRepository = AlbumRepositoryImpl(
+        albumLocalDataSource = localDataSource,
+        albumRemoteDataSource = remoteData
+    )
+
+    private  val deleteLocalAlbumUseCase = DeleteLocalAlbumUseCase(albumRepository)
+    private  val getLocalAlbumUseCase =  GetLocalAlbumUseCase(albumRepository)
+    private  val saveAlbumUseCase = SaveAlbumUseCase(albumRepository)
+    private  val getRemoteAlbumUseCase = GetRemoteAlbumUseCase(albumRepository)
+
+    @Test
+    fun `calling getAlbums() triggers the api client`() = runTest {
+        // Arrange
+        val albumViewModel = AlbumViewModel(
             getRemoteAlbumUseCase = getRemoteAlbumUseCase,
             saveAlbumUseCase = saveAlbumUseCase,
             deleteLocalAlbumUseCase = deleteLocalAlbumUseCase,
             getLocalAlbumUseCase = getLocalAlbumUseCase
         )
 
-    }
+        // Act
+        albumViewModel.getRemoteAlbums()
+        runCurrent()
 
-
-    @Test
-    fun `creating a viewmodel exposes loading ui state`() {
-        this.initializeViewModel()
-
-        //assert
-        assert(albumViewModel.screenStateAlbums.value.isLoad is Boolean)
+        // Assert
+        verify(mockApiClient, times(1)).getAlbums()
     }
 
     @Test
-    fun `update the ui state is the getRemote is a success`() {
-        this.initializeViewModel()
+    fun `calling save album triggers the dao insert`() = runTest {
+        // Arrange
+        val albumViewModel = AlbumViewModel(
+            getRemoteAlbumUseCase = getRemoteAlbumUseCase,
+            saveAlbumUseCase = saveAlbumUseCase,
+            deleteLocalAlbumUseCase = deleteLocalAlbumUseCase,
+            getLocalAlbumUseCase = getLocalAlbumUseCase
+        )
 
-        val expectedUiState = AlbumListScreenState(
-            isLoad = false,
-            isNetworkConnected = true,
-            isNetworkError = false,
-            isRequested = false,
-            albumList = getAlbumsList()
+
+        // Act
+        albumViewModel.insertAlbums(albums)
+        runCurrent()
+
+        // Assert
+        verify(mockAlbumDAO, times(1)).insert(albumsRoom[0])
+    }
+
+    @Test
+    fun `calling delete all albums triggers the dao delete`() = runTest {
+        // Arrange
+        val albumViewModel = AlbumViewModel(
+            getRemoteAlbumUseCase = getRemoteAlbumUseCase,
+            saveAlbumUseCase = saveAlbumUseCase,
+            deleteLocalAlbumUseCase = deleteLocalAlbumUseCase,
+            getLocalAlbumUseCase = getLocalAlbumUseCase
         )
 
         // Act
-        coroutineRule.testDispatcher.scheduler.runCurrent()
+        albumViewModel.deleteAlbums()
+        runCurrent()
+
         // Assert
-        val actualState = albumViewModel.screenStateAlbums.value
-        assertEquals(actualState, expectedUiState)
+        verify(mockAlbumDAO, times(1)).deleteAllAlbum()
+    }
+
+    @Test
+    fun `we test if we return isConnected SnackBar Message`() = runTest {
+        // Arrange
+        val albumViewModel = AlbumViewModel(
+            getRemoteAlbumUseCase = getRemoteAlbumUseCase,
+            saveAlbumUseCase = saveAlbumUseCase,
+            deleteLocalAlbumUseCase = deleteLocalAlbumUseCase,
+            getLocalAlbumUseCase = getLocalAlbumUseCase
+        )
+
+        // Act
+        albumViewModel.onEvent(
+            AlbumEvent.IsNetworkConnected("You are disconnected, please review your connection")
+        )
+
+        // Assert
+        albumViewModel.uiEventFlow.test {
+            //we get our flow item
+            val showMessage =  awaitItem() as UIEvent.ShowMessage
+            assertThat(showMessage.message).isEqualTo("You are disconnected, please review your connection")
+        }
     }
 }
