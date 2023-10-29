@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flow
 
 class FakeAlbumRepository : AlbumRepository {
 
-    private var shouldRetrieveAlbumListNetworkError = false
+    val shouldRetrieveAlbumListNetworkError = false
     val fakeAlbumListResult = listOf<Album>()
 
     override suspend fun getAlbums(): Resource<List<Album>> {
