@@ -51,7 +51,7 @@ class AlbumViewModel @Inject constructor(
      fun getRemoteAlbums() = viewModelScope.launch {
         try {
             //we delete our database cache before reloading the new data if the user is online
-            deleteLocalAlbumUseCase.execute()
+            deleteAlbums()
             val apiResult = getRemoteAlbumUseCase.execute()
             apiResult.data?.let { albums ->
                 /**
@@ -81,6 +81,7 @@ class AlbumViewModel @Inject constructor(
     }
 
 
+    //here we insert our all album in our database
     suspend fun insertAlbums(albums: List<Album>) {
         albums.forEach { album ->
             //here we save in our album table
@@ -95,6 +96,10 @@ class AlbumViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    suspend fun deleteAlbums() {
+        deleteLocalAlbumUseCase.execute()
     }
 
     /**
