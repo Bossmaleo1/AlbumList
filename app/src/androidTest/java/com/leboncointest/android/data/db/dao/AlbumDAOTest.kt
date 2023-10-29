@@ -82,7 +82,7 @@ class AlbumDAOTest {
     }
 
     @Test
-    fun get_all_database_albums_Test() = runTest {
+    fun getAllDatabaseAlbumsTest() = runTest {
         //before we insert our album data
         insertAlbumList()
 
@@ -102,7 +102,7 @@ class AlbumDAOTest {
     }
 
     @Test
-    fun delete_all_albums_Test() = runTest {
+    fun deleteAllAlbumsTest() = runTest {
         //we insert our albums before to delete it
         insertAlbumList()
 
@@ -110,7 +110,7 @@ class AlbumDAOTest {
         dao.getAllAlbums().test {
             //we get our flow item
             val albums = awaitItem()
-            Truth.assertThat(albums.size).isEqualTo(2)
+            Truth.assertThat(albums.size).isEqualTo(4)
             cancel()
         }
         //we delete our all album
@@ -125,7 +125,7 @@ class AlbumDAOTest {
     }
 
     @Test
-    fun update_album_Test() = runTest {
+    fun updateAlbumTest() = runTest {
         //we insert our albums before to update it
         insertAlbumList()
 
