@@ -1,9 +1,8 @@
 package com.leboncointest.android.data.repository.dataSourceImpl.album
 
-import com.leboncointest.android.albums
 import com.leboncointest.android.data.apiService.AlbumAPIService
 import com.leboncointest.android.data.model.dataRemote.response.Album
-import com.leboncointest.android.successfulResponse
+import com.leboncointest.android.errorResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.OkHttpClient
@@ -12,9 +11,9 @@ import okhttp3.mockwebserver.MockWebServer
 import okio.buffer
 import okio.source
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import retrofit2.HttpException
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
