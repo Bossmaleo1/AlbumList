@@ -5,8 +5,5 @@ import android.content.Context
 sealed class AlbumEvent {
 
     data class GetRemoteAlbums(val app: Context): AlbumEvent()
-
-    object GetLocalAlbums: AlbumEvent()
-
     data class IsNetworkConnected(val errorMessage: String): AlbumEvent()
 }
