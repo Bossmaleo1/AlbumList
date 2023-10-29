@@ -2,7 +2,7 @@ package com.leboncointest.android.presentation.di
 
 import com.leboncointest.android.data.apiService.AlbumAPIService
 import com.leboncointest.android.data.repository.dataSource.album.AlbumRemoteDataSource
-import com.leboncointest.android.data.repository.dataSourceImpl.AlbumRemoteDataSourceImpl
+import com.leboncointest.android.data.repository.dataSourceImpl.album.AlbumRemoteDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
