@@ -111,6 +111,8 @@ class AlbumViewModel @Inject constructor(
         }
     }
 
+
+
     //in this method we handle our product list event
     fun onEvent(event: AlbumEvent) {
         when(event) {
