@@ -1,5 +1,7 @@
 package com.leboncointest.android.domain.repository
 
+import com.leboncointest.android.albums
+import com.leboncointest.android.albumsRoom
 import com.leboncointest.android.data.model.dataLocal.AlbumRoom
 import com.leboncointest.android.data.model.dataRemote.response.Album
 import com.leboncointest.android.domain.repository.AlbumRepository
@@ -16,73 +18,13 @@ class FakeAlbumRepository : AlbumRepository {
         return if(shouldRetrieveAlbumListNetworkError) {
             Resource.Error("Error", null)
         } else {
-            Resource.Success(listOf(
-                Album(
-                    albumId = 1,
-                    id = 1,
-                    title = "accusamus beatae ad facilis cum similique qui sunt",
-                    url = "https://via.placeholder.com/600/92c952",
-                    thumbnailUrl = "https://via.placeholder.com/150/92c952"
-                ),
-                Album(
-                    albumId = 1,
-                    id = 2,
-                    title = "reprehenderit est deserunt velit ipsam",
-                    url = "https://via.placeholder.com/600/24f355",
-                    thumbnailUrl = "https://via.placeholder.com/150/24f355"
-                ),
-                Album(
-                    albumId = 1,
-                    id = 3,
-                    title = "officia porro iure quia iusto qui ipsa ut modi",
-                    url = "https://via.placeholder.com/600/24f355",
-                    thumbnailUrl = "https://via.placeholder.com/150/24f355"
-                ),
-                Album(
-                    albumId = 1,
-                    id = 4,
-                    title = "culpa odio esse rerum omnis laboriosam voluptate repudiandae",
-                    url = "https://via.placeholder.com/600/d32776",
-                    thumbnailUrl = "https://via.placeholder.com/150/d32776"
-                )
-            ))
+            Resource.Success(albums)
         }
     }
 
     override fun getLocalAlbums(): Flow<List<AlbumRoom>> {
        return flow {
-           emit(
-               listOf(
-                   AlbumRoom(
-                       albumId = 1,
-                       id = 1,
-                       title = "accusamus beatae ad facilis cum similique qui sunt",
-                       url = "https://via.placeholder.com/600/92c952",
-                       thumbnailUrl = "https://via.placeholder.com/150/92c952"
-                   ),
-                   AlbumRoom(
-                       albumId = 1,
-                       id = 2,
-                       title = "reprehenderit est deserunt velit ipsam",
-                       url = "https://via.placeholder.com/600/24f355",
-                       thumbnailUrl = "https://via.placeholder.com/150/24f355"
-                   ),
-                   AlbumRoom(
-                       albumId = 1,
-                       id = 3,
-                       title = "officia porro iure quia iusto qui ipsa ut modi",
-                       url = "https://via.placeholder.com/600/24f355",
-                       thumbnailUrl = "https://via.placeholder.com/150/24f355"
-                   ),
-                   AlbumRoom(
-                       albumId = 1,
-                       id = 4,
-                       title = "culpa odio esse rerum omnis laboriosam voluptate repudiandae",
-                       url = "https://via.placeholder.com/600/d32776",
-                       thumbnailUrl = "https://via.placeholder.com/150/d32776"
-                   )
-               )
-           )
+           emit(albumsRoom)
        }
     }
 

@@ -38,7 +38,7 @@ class AlbumViewModel @Inject constructor(
     )
 
     /**
-     * Here we call the State Class to activate the State driven in our album list
+     * Here we call the State Class to actAlbumListScreenStateivate the State driven in our album list
      */
     val screenStateAlbums: State<AlbumListScreenState> = _screenStateAlbums
 
@@ -47,7 +47,7 @@ class AlbumViewModel @Inject constructor(
     val uiEventFlow = _uiEventFlow.asSharedFlow()
 
     // Here we make our http Request to get our album list
-    private fun getRemoteAlbums() = viewModelScope.launch {
+     fun getRemoteAlbums() = viewModelScope.launch {
         try {
             //we delete our database cache before reloading the new data if the user is online
             deleteLocalAlbumUseCase.execute()
@@ -143,8 +143,6 @@ class AlbumViewModel @Inject constructor(
                     )
                 }
             }
-
-
         }
     }
 
