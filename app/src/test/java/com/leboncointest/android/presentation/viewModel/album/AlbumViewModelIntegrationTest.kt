@@ -1,5 +1,7 @@
 package com.leboncointest.android.presentation.viewModel.album
 
+import com.leboncointest.android.albums
+import com.leboncointest.android.albumsRoom
 import com.leboncointest.android.data.apiService.AlbumAPIService
 import com.leboncointest.android.data.db.dao.AlbumDAO
 import com.leboncointest.android.data.repository.dataSourceImpl.AlbumRepositoryImpl
@@ -68,5 +70,22 @@ class AlbumViewModelIntegrationTest {
         verify(mockApiClient, times(1)).getAlbums()
     }
 
+    @Test
+    fun `calling save album triggers the dao insert`() = runTest {
+        // Arrange
+        val albumViewModel = AlbumViewModel(
+            getRemoteAlbumUseCase = getRemoteAlbumUseCase,
+            saveAlbumUseCase = saveAlbumUseCase,
+            deleteLocalAlbumUseCase = deleteLocalAlbumUseCase,
+            getLocalAlbumUseCase = getLocalAlbumUseCase
+        )
 
+
+        // Act
+        albumViewModel.insertAlbums(albums)
+        runCurrent()
+
+        // Assert
+        verify(mockAlbumDAO, times(1)).insert(albumsRoom[0])
+    }
 }

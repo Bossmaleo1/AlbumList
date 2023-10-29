@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.leboncointest.android.data.model.dataLocal.AlbumRoom
+import com.leboncointest.android.data.model.dataRemote.response.Album
 import com.leboncointest.android.domain.usecase.DeleteLocalAlbumUseCase
 import com.leboncointest.android.domain.usecase.GetLocalAlbumUseCase
 import com.leboncointest.android.domain.usecase.GetRemoteAlbumUseCase
@@ -67,19 +68,7 @@ class AlbumViewModel @Inject constructor(
                     isRequested = false
                 )
 
-                albums.forEach { album ->
-                    //here we save in our product table
-                    saveAlbumUseCase.execute(
-                        album =
-                        AlbumRoom(
-                            id = album.id,
-                            albumId = album.albumId,
-                            title = album.title,
-                            url = album.url,
-                            thumbnailUrl = album.thumbnailUrl
-                        )
-                    )
-                }
+                insertAlbums(albums)
             }
         } catch (e: Exception) {
             _screenStateAlbums.value = _screenStateAlbums.value.copy(
@@ -87,6 +76,23 @@ class AlbumViewModel @Inject constructor(
                 isNetworkError = true,
                 isLoad = false,
                 isRequested = false
+            )
+        }
+    }
+
+
+    suspend fun insertAlbums(albums: List<Album>) {
+        albums.forEach { album ->
+            //here we save in our album table
+            saveAlbumUseCase.execute(
+                album =
+                AlbumRoom(
+                    id = album.id,
+                    albumId = album.albumId,
+                    title = album.title,
+                    url = album.url,
+                    thumbnailUrl = album.thumbnailUrl
+                )
             )
         }
     }
