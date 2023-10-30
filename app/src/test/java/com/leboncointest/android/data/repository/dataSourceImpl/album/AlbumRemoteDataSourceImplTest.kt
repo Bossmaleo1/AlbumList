@@ -12,7 +12,6 @@ import okio.source
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import retrofit2.HttpException
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
