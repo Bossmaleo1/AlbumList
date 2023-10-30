@@ -39,9 +39,7 @@ import com.leboncointest.android.ui.views.model.BottomNavigationItem
 import com.leboncointest.android.ui.views.model.Route
 
 @Composable
-fun HomeApp(
-    albumViewModel: AlbumViewModel
-) {
+fun HomeApp() {
 
     //we get the mode of our os theme
     val isDark = isSystemInDarkTheme()
@@ -120,9 +118,7 @@ fun HomeApp(
                     // here we initialize our content home app views
                     when (selectedItem.intValue) {
                         0 -> {
-                            SearchAlbum(
-                                albumViewModel = albumViewModel
-                            )
+                            SearchAlbum()
                         }
 
                         1 -> {
@@ -148,7 +144,9 @@ fun HomeApp(
 
         },
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.99f)
+            ) {
                 bottomNavigationItems.forEachIndexed { index, item ->
                     NavigationBarItem(
                         icon = {

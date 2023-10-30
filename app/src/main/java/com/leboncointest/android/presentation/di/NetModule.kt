@@ -1,5 +1,6 @@
 package com.leboncointest.android.presentation.di
 
+import BaseUrl
 import com.leboncointest.android.BuildConfig
 import com.leboncointest.android.data.apiService.AlbumAPIService
 import dagger.Module
@@ -26,12 +27,16 @@ class NetModule {
         return retrofit.create(AlbumAPIService::class.java)
     }
 
-    /**
+    @Provides
+    @BaseUrl
+    fun provideBaseUrl(): String = BuildConfig.BASE_URL_DEV
+
+        /**
      * Here we inject Retrofit and OkHttp
      */
     @Singleton
     @Provides
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofit( @BaseUrl baseUrl: String): Retrofit {
         val interceptor = HttpLoggingInterceptor().apply {
             this.level = HttpLoggingInterceptor.Level.BODY
         }
@@ -44,7 +49,7 @@ class NetModule {
         }.build()
 
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL_DEV)
+            .baseUrl(baseUrl)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
