@@ -12,13 +12,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.leboncointest.android.presentation.viewModel.album.AlbumViewModel
-import com.leboncointest.android.presentation.viewModel.album.AlbumViewModelFactory
 import com.leboncointest.android.ui.theme.LeBonCoinTheme
 import com.leboncointest.android.ui.views.HomeApp
 import com.leboncointest.android.ui.views.LaunchView
@@ -28,14 +25,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var albumFactory: AlbumViewModelFactory
-    private lateinit var albumViewModel: AlbumViewModel
 
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,9 +51,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun initViewModel() {
-        albumViewModel = ViewModelProvider(owner = this, albumFactory)[AlbumViewModel::class.java]
-    }
 
     /***
      * This method initialize our view navigation
@@ -70,9 +59,6 @@ class MainActivity : ComponentActivity() {
     fun MainView(navController: NavHostController) {
 
         val activity = (LocalContext.current as? Activity)
-
-        //We call our init view model method
-        this.initViewModel()
 
         NavHost(navController = navController, startDestination = Route.launchView) {
             //This is our launch view navigation initialize
@@ -87,9 +73,7 @@ class MainActivity : ComponentActivity() {
             composable(
                 route = Route.homeView
             ) {
-                HomeApp(
-                    albumViewModel = albumViewModel
-                )
+                HomeApp()
                 //this instruction help the user to exit of the app
                 //after he press the back button
                 BackHandler {

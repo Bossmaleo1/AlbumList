@@ -45,6 +45,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
 import com.leboncointest.android.R
 import com.leboncointest.android.data.model.dataRemote.response.Album
@@ -57,7 +58,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SearchAlbum(
-    albumViewModel: AlbumViewModel
+    albumViewModel: AlbumViewModel = hiltViewModel()
 ) {
 
     //we get the mode of our os theme
