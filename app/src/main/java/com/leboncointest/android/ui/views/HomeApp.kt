@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.leboncointest.android.presentation.viewModel.album.AlbumViewModel
 import com.leboncointest.android.R
 import com.leboncointest.android.ui.views.bottomNavigationItems.AccountItem
 import com.leboncointest.android.ui.views.bottomNavigationItems.FavoriteItem
