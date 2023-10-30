@@ -159,10 +159,7 @@ fun SearchAlbum(
                     ),
                     modifier = Modifier.run {
                         //we make white if we have the light mode
-                        if (!isDark) {
-                            this.background(Color.White)
-                        }
-                        this.background(MaterialTheme.colorScheme.surface)
+                        this.background(getSurfaceBackgrounClor(isDark))
                     }
                 ) {
                     items(screenState.albumList) { album ->
