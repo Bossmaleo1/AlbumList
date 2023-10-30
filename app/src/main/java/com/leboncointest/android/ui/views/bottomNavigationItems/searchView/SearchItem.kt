@@ -99,7 +99,7 @@ fun SearchAlbum(
                 .fillMaxSize()
                 .padding(paddingValue).run {
                     //we make white if we have the light mode
-                    this.background(getSurfaceBackgrounClor(isDark))
+                    this.background(getSurfaceBackgroundColor(isDark))
                 }
         ) {
             Spacer(modifier = Modifier.size(10.dp))
@@ -152,7 +152,7 @@ fun SearchAlbum(
                  * to illustrate a UI as
                  * in the real application
                  */
-                LazyColumn(
+                /*LazyColumn(
                     state = rememberLazyListState(),
                     contentPadding = PaddingValues(
                         top = 20.dp,
@@ -160,7 +160,7 @@ fun SearchAlbum(
                     ),
                     modifier = Modifier.run {
                         //we make white if we have the light mode
-                        this.background(getSurfaceBackgrounClor(isDark))
+                        this.background(getSurfaceBackgroundColor(isDark))
                     }
                 ) {
                     items(screenState.albumList) { album ->
@@ -168,9 +168,8 @@ fun SearchAlbum(
                             album = album
                         )
                     }
-
-
-                }
+                }*/
+                AlbumList(isDark,screenState.albumList)
             }
         }
     }
@@ -195,7 +194,7 @@ fun SearchAlbum(
 
 
             //we get our product list
-            albumViewModel.getAlbumList().observe(context as LifecycleOwner) {albums->
+            albumViewModel.getAlbumList().observe(context as LifecycleOwner) { albums ->
 
                 // Before we clean our screen state product list
                 screenState.albumList.removeAll(screenState.albumList)
@@ -241,12 +240,12 @@ fun SearchAlbum(
 
 @Composable
 fun getBackgroundColor(isDark: Boolean): Color {
-   return if (isDark) Color.White else MaterialTheme.colorScheme.background
+    return if (isDark) Color.White else MaterialTheme.colorScheme.background
 }
 
 @Composable
-fun getSurfaceBackgrounClor(isDark: Boolean): Color{
-      return if (!isDark) {
+fun getSurfaceBackgroundColor(isDark: Boolean): Color {
+    return if (!isDark) {
         Color.White
     } else {
         MaterialTheme.colorScheme.surface
