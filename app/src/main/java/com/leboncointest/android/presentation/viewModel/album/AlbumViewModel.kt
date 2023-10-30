@@ -63,9 +63,7 @@ class AlbumViewModel @Inject constructor(
                 // Here we upgrade our state
                 _screenStateAlbums.value = _screenStateAlbums.value.copy(
                     isLoad = false,
-                    isNetworkConnected = true,
-                    isNetworkError = false,
-                    isRequested = false
+                    isNetworkConnected = true
                 )
 
                 insertAlbums(albums)
@@ -73,9 +71,7 @@ class AlbumViewModel @Inject constructor(
         } catch (e: Exception) {
             _screenStateAlbums.value = _screenStateAlbums.value.copy(
                 isNetworkConnected = true,
-                isNetworkError = true,
                 isLoad = false,
-                isRequested = false
             )
         }
     }
@@ -132,7 +128,6 @@ class AlbumViewModel @Inject constructor(
                         //we have's  the network connexion
                         isNetworkConnected = false,
                         //if we have's the network error
-                        isNetworkError = false,
                         isLoad = false,
                     )
                 }

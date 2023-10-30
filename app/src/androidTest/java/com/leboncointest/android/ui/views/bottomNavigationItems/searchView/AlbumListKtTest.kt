@@ -14,7 +14,7 @@ class AlbumListKtTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun activityListDisplaysAllActivities() {
+    fun albumListDisplaysAlbums() {
         composeTestRule.setContent {
             AlbumList(true, albums)
         }
